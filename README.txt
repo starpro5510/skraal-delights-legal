@@ -1,6 +1,7 @@
 SKRAAL DELIGHTS - PUBLIC POLICY WEBSITE (for GitHub Pages)
 
-Files: index.html, terms.html, privacy.html, driver-privacy.html, store-privacy.html, refunds.html,
+Files: index.html, terms.html, driver-terms.html, store-terms.html, privacy.html, driver-privacy.html,
+       store-privacy.html, refunds.html,
        delete-account.html, style.css, script.js, assets/ (logos), .nojekyll
 
 BEFORE YOU PUBLISH
@@ -16,6 +17,8 @@ PUBLISH ON GITHUB (free)
 
 Google Play links (base: https://starpro5510.github.io/skraal-delights-legal/):
   Customer app privacy policy : .../privacy.html
+  Driver Partner Terms        : .../driver-terms.html
+  Store Partner Terms         : .../store-terms.html
   Driver app privacy policy   : .../driver-privacy.html
   Store Management privacy    : .../store-privacy.html
   Account deletion (all apps) : .../delete-account.html
