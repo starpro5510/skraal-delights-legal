@@ -1,22 +1,19 @@
 (function(){
-  var btn=document.querySelector('.nav-toggle'),nav=document.getElementById('nav');
-  if(btn&&nav){btn.addEventListener('click',function(){
-    var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o);});}
-  var toc=document.querySelector('.toc');
-  if(toc){var h2=toc.querySelector('h2'),tb=document.createElement('button');
-    tb.type='button';tb.className='toc-toggle';tb.setAttribute('aria-expanded','false');
-    tb.innerHTML=(h2?h2.textContent:'On this page')+' <span aria-hidden="true">▾</span>';
-    toc.insertBefore(tb,toc.firstChild);
-    tb.addEventListener('click',function(){var o=toc.classList.toggle('open');tb.setAttribute('aria-expanded',o);});
-    toc.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a')){toc.classList.remove('open');tb.setAttribute('aria-expanded','false');}});}
-  var links=[].slice.call(document.querySelectorAll('.toc a'));
-  if(!links.length||!('IntersectionObserver' in window))return;
-  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
-  var obs=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active');});
-        var a=map[e.target.id];if(a)a.classList.add('active');}
-    });
-  },{rootMargin:'-90px 0px -70% 0px'});
-  document.querySelectorAll('.doc h2[id]').forEach(function(h){obs.observe(h);});
+ 'use strict';
+ const btn=document.getElementById('menu-toggle'),nav=document.getElementById('navigation');
+ function close(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false')}
+ if(btn&&nav){btn.onclick=function(){const open=nav.classList.toggle('open');btn.setAttribute('aria-expanded',String(open))};nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})}
+ const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
+ const url=window.SKRAAL_CONFIG?.customerWebsite;
+ try{const parsed=new URL(url);if(parsed.protocol==='https:')document.querySelectorAll('.customer-link').forEach(a=>a.href=parsed.href)}catch{}
+ const toc=document.querySelector('.toc');
+ if(!toc)return;
+ const heading=toc.querySelector('h2'),list=toc.querySelector('ol'),toggle=document.createElement('button');
+ list.id='policy-contents';toggle.type='button';toggle.className='toc-toggle';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls',list.id);
+ toggle.innerHTML=(heading?heading.textContent:'On this page')+' <span aria-hidden="true">↓</span>';toc.insertBefore(toggle,list);
+ toggle.onclick=function(){toggle.setAttribute('aria-expanded',String(toc.classList.toggle('open')))};
+ toc.addEventListener('click',function(e){if(e.target.closest('a')){toc.classList.remove('open');toggle.setAttribute('aria-expanded','false')}});
+ const links=[...toc.querySelectorAll('a[href^="#"]')];if(!('IntersectionObserver'in window))return;
+ const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(a=>{const active=a.getAttribute('href')==='#'+entry.target.id;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')})}})},{rootMargin:'-120px 0px -65% 0px'});
+ document.querySelectorAll('.doc h2[id]').forEach(h=>observer.observe(h));
 })();
